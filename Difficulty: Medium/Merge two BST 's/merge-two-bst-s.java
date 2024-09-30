@@ -108,33 +108,34 @@ class Node
 
 */
 class Solution {
-    public void solve(Node root,List<Integer>ls){
-        if(root==null)return;
-        solve(root.left,ls);
-        ls.add(root.data);
-        solve(root.right,ls);
-    }
+    // Function to return a list of integers denoting the node
+    // values of both the BST in a sorted order.
     public List<Integer> merge(Node root1, Node root2) {
-        List<Integer>ls1=new ArrayList<>();
-        List<Integer>ls2=new ArrayList<>();
-         List<Integer>ans=new ArrayList<>();
-        solve(root1,ls1);
-        solve(root2,ls2);
-        int n=ls1.size();int m=ls2.size();int i=0;int j=0;
-        while(i<n || j<m){
-            if(i<n && j<m && ls2.get(j)>=ls1.get(i)){
-                ans.add(ls1.get(i++));
-            }
-            else if(i<n && j<m && ls2.get(j)<ls1.get(i)){
-                ans.add(ls2.get(j++));
-            }
-            else if(i<n){
-                 ans.add(ls1.get(i++));
-            }
-            else{
-                 ans.add(ls2.get(j++));
-            }
+        // Write your code here
+        List<Integer> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+        traverse(root1, list1);
+        traverse(root2, list2);
+        return merge(list1, list2);
+    }
+    
+    private List<Integer> merge(List<Integer> list1, List<Integer> list2){
+        List<Integer> list = new ArrayList<>();
+        int i=0, j=0;
+        while(i<list1.size() && j<list2.size()){
+            if(list1.get(i) < list2.get(j)) list.add(list1.get(i++));
+            else list.add(list2.get(j++));
         }
-        return ans;
+        while(i<list1.size()) list.add(list1.get(i++));
+        while(j<list2.size()) list.add(list2.get(j++));
+        return list;
+    }
+    
+    private void traverse(Node root, List<Integer> list){
+        if(root == null) return;
+        traverse(root.left, list);
+        list.add(root.data);
+        traverse(root.right, list);
     }
 }
+
